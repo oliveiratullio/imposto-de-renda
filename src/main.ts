@@ -1,9 +1,10 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
 
-dotenv.config();
-console.log(process.env.JWT_SECRET);
+const configService = new ConfigService();
+export const jwtSecret = configService.get('JWT_SECRET');
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
