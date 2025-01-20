@@ -8,20 +8,38 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(uuid())
-  name          String
-  email         String   @unique
-  password      String
-  sessions      Session[]
+  id               String          @id @default(uuid())
+  name             String
+  email            String          @unique
+  password         String
+  sessions         Session[]
+  taxDeclarations  TaxDeclaration[]
 }
 
 model Session {
-  id           String   @id @default(uuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  expiresAt    DateTime
-  userId       String
-  user         User     @relation(fields: [userId], references: [id])
-  accessToken  String   @unique @default(uuid())
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  expiresAt   DateTime
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  accessToken String   @unique @default(uuid())
 }
 
+model TaxDeclaration {
+  id                   String    @id @default(uuid())
+  taxYear              Int
+  taxpayerCPF          String
+  annualIncome         Float
+  taxDue               Float
+  taxPaid              Float
+  numberOfDependents   Int?
+  pensionContribution  Float?
+  educationExpenses    Float?
+  healthExpenses       Float?
+  creationDate         DateTime  @default(now())
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id])
+
+  @@map("tax_declarations")
+}

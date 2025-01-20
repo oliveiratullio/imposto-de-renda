@@ -14,7 +14,7 @@ export class UsersController {
   ) {}
 
   @Post('signup')
-  async signUp(@Body() body: any) {
+  async signUp(@Body() body: CreateUserDto) {
     const result = CreateUserSchema.safeParse(body);
     if (!result.success) {
       throw new BadRequestException(result.error.format());
@@ -24,7 +24,7 @@ export class UsersController {
   }
 
   @Post('login')
-  async login(@Body() body: any) {
+  async login(@Body() body: LoginUserDto) {
     const result = LoginUserSchema.safeParse(body);
     if (!result.success) {
       throw new BadRequestException(result.error.format());
@@ -41,8 +41,15 @@ export class UsersController {
     }
     const jwtSecret = this.configService.get('JWT_SECRET');
     const payload = { sub: user.id };
+    const access_token = this.jwtService.sign(payload, { secret: jwtSecret });
+    const userData = {
+      email: user.email,
+      name: user.name,
+      id: user.id,
+      access_token,
+    };
     return {
-      access_token: this.jwtService.sign(payload, { secret: jwtSecret }),
+      user: userData,
     };
   }
 }
