@@ -1,73 +1,77 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Imposto de Renda
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto é uma API para gerenciamento de usuários e declarações de imposto de renda.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tecnologias Utilizadas
 
-## Description
+- **NestJS**: Framework para construção de aplicações Node.js escaláveis.
+- **Prisma**: ORM utilizado para interagir com o banco de dados.
+- **PostgreSQL**: Banco de dados utilizado.
+- **Zod**: Biblioteca para validação de esquemas.
+- **JWT**: Utilizado para autenticação.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Como Baixar o Projeto
 
-## Installation
+1. Clone o repositório:
 
-```bash
-$ npm install
-```
+   ```bash
+   git clone git@github.com:oliveiratullio/imposto-de-renda.git
+   ```
 
-## Running the app
+2. Navegue até o diretório do projeto:
 
-```bash
-# development
-$ npm run start
+   ```bash
+   cd imposto-de-renda
+   ```
 
-# watch mode
-$ npm run start:dev
+3. Instale as dependências:
 
-# production mode
-$ npm run start:prod
-```
+   ```bash
+   npm install
+   ```
 
-## Test
+## Como Rodar o Projeto
 
-```bash
-# unit tests
-$ npm run test
+1. Configure as variáveis de ambiente criando um arquivo `.env` na raiz do projeto. Exemplo:
 
-# e2e tests
-$ npm run test:e2e
+   Neste caso o arquivo .env já está no projeto para facilitar o acesso.
 
-# test coverage
-$ npm run test:cov
-```
+2. Execute o projeto:
 
-## Support
+   ```bash
+   npm run start:dev
+   ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Migração e Geração do Prisma
+ Caso queira utilizar um banco de dados próprio, você pode substituir o DATABASE_URL no .env.
+1. Para criar as migrações, execute:
 
-## Stay in touch
+   ```bash
+   npx prisma migrate dev
+   ```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+2. Para gerar o cliente Prisma, execute:
 
-## License
+   ```bash
+   npx prisma generate
+   ```
 
-Nest is [MIT licensed](LICENSE).
+## Rotas do Projeto
+
+- **/users/signup** (POST): Cria um novo usuário.
+	+ Espera receber um JSON com `name`, `email` e `password`.
+- **/users/login** (POST): Faz login de um usuário existente.
+	+ Espera receber um JSON com `email` e `password`.
+- **/tax-declarations** (POST): Cria uma nova declaração de imposto.
+	+ Espera receber um JSON com `taxYear`, `taxpayerCPF`, `annualIncome`, `taxDue`, `taxPaid`, `numberOfDependents`, `pensionContribution`, `educationExpenses` e `healthExpenses`.
+- **/tax-declarations/:id** (GET): Retorna todas as declarações de imposto de um usuário específico.
+  + Espera receber o id do usuário cujas declarações são requisitadas.
+- **/tax-declarations/declaration/:id** (GET): Retorna uma declaração de imposto específica.
+  + Espera receber o id da declaração requisitada.
+- **/tax-declarations/:id** (PATCH): Atualiza uma declaração de imposto específica.
+	+ Espera receber um JSON com os campos que devem ser atualizados.
+- **/tax-declarations/:id** (DELETE): Remove uma declaração de imposto específica.
+
+Certifique-se de que o servidor do banco de dados PostgreSQL esteja rodando localmente antes de iniciar o aplicativo.
+
+
