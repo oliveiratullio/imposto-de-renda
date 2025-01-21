@@ -1,4 +1,3 @@
-// users.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -9,7 +8,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-    private jwtService: JwtService, // Injetar JwtService para geração do token
+    private jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
